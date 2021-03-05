@@ -2,7 +2,7 @@
 //  MoviesViewController.swift
 //  Flixster
 //
-//  Created by Andres Noy on 2/19/21.
+//  Created by Aurelie Cordero on 2/19/21.
 //
 
 import UIKit
@@ -11,6 +11,7 @@ import AlamofireImage
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+    
     var movies = [[String:Any]] ()
     
 
@@ -65,19 +66,31 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let posterPath = movie["poster_path"] as! String
         let posterUrl = URL(string: baseUrl + posterPath)!
         
-        cell.posterView.af_setImage(withURL: (posterUrl))
+        cell.posterView.af_setImage(withURL: posterUrl)
+        
         return cell
     }
     
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        print ("Loading up the details screen")
+        
+        //find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for:cell)!
+        let movie = movies[indexPath.row]
+        
+        //pass the selected movie to the details view controller
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
+
 
 }
